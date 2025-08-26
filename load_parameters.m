@@ -1,20 +1,19 @@
  
- 
-function p = load_parameters()
+ function p = load_parameters()
 
 % LIST OF PARAMETERS
 
 p.rho = 0.5;   % bystander damage modulation
 
 % VIRUS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-p.V0         = 12;         % initial virus Copies/mL
+p.V0 = 4.5;         % initial virus Copies/mL
 p.eps_F_I    = 2*1e-4;  % IFN inhibition of viral production           
 p.eps_Gamma_I = 3.147*10^-4 ;% IFN-gamma inhibition of viral production
-p.del_V_MPhi = 768;       % Rate macrophages clear viruses (1/day)
-p.del_V_N    = p.del_V_MPhi;    % Rate neutrophils clear viruses (1/day)
+p.del_V_MPhi = 768 * 1.5;       % Rate macrophages clear viruses (1/day)
+p.del_V_N = 2304/2.2;    % Rate neutrophils clear viruses (1/day)
 p.d_V        = 18.94;               % decay rate of viruses (turned off when immune presence is considered)
-p.phat       = 741.2;            %lytic viral production rate
-p.d_V_spec = 0; %pech not sure what this aligns to
+p.phat = 394 * 1.5;            %lytic viral production rate
+p.d_V_spec = 0; % d_V is zero upon infection
 
 % CELLS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -28,14 +27,14 @@ p.h_N       = 3.0198;           % Hill coefficient for neutrophil induced damage
 p.h_MPhi_alpha       = 0.4;           % Hill coefficient for TNF-alpha inhibition of inflammatory macrophages
 p.IC_50_N   = 4.7054*1e-2;           % IC50 for neutrophil induced damage of cells (susceptible and infected)
 p.del_N     = 1.6786; 	        % Rate neutrophils inflict tissue damage (1/cell/day)- XX needs to be converted to ng/mL/day (susceptible and infected)
-p.beta      = 0.289;        %Infection rate
+p.beta = 0.3 * 1.05;        %Infection rate
 p.tau_I     = 0.1667;             % converted - eclipse phase
 
 %Infected cell %------------------------------------
 p.I0         = 0;               % Initial infected cells x 10^9
 p.del_I_MPhi = 121.195;    % Rate macrophages phagocytose infected cells (1/day)
 p.del_I_T    = 238*0.5;            % Rate T cells clear infected cell (1/cell 1/day)
-p.d_I	     = 0.144;            % lysis rate
+p.d_I = 0.1;           % lysis rate
 
 %Dead/damaged cell %------------------------------------
 p.D0         = 0;               % initial dead cells x 10^9
@@ -48,21 +47,18 @@ p.d_MPhi_R     = 0.0124;	     % death rate of resident macrophages
 p.lam_MPhi     = 5.9432*1e3;     % production or resident macrophages from infiltrating (systemic) macs
 p.eps_V_MPhi   = 905.22/1e3;       % half-effect virus concentration for resident macrophage replenishing
 p.MPhi_max     = p.MPhi_R_0;     % carrying capacity for resident macs
-p.a_I_MPhi     = 1100;         % activation of resident macrophages to inflammatory macros
-p.a_I_MPhi     = 1100 *1.5 ;    %pech
+p.a_I_MPhi     = 1100 * 1.5;         % activation of resident macrophages to inflammatory macros
 p.del_MPhi_D   = 6.0607;     % rate macs die from phaocytosis
 
 %Infiltrating macrophage %------------------------------------
 p.MPhi_I_0     = 0;             % Initial infiltrating macrophages x 10^8 cells 
-%p.p_MPhi_I_G   = 0.42;        % differentiation of monocyte to macrophage by GM-CSF (rate)
-p.p_MPhi_I_G   = 1.7 * 2;  %pech overrided
+p.p_MPhi_I_G =  0.42*4;  %differentiation of monocyte to macrophage by GM-CSF (rate)
 p.eps_G_MPhi   = 2664.5/1e5;        % differentation of monocyte to macrophage by GM-CSf (half-effect)
 p.h_M_MPhi     = 2.0347;     	% differentation of monocyte to macrophage by GM-CSf (hill coefficient)
-p.p_MPhi_I_L   = p.p_MPhi_I_G;             % differentiation of monocyte to macrophage by IL-6 (rate)
+p.p_MPhi_I_L =  0.78; % differentiation of monocyte to macrophage by IL-6 (rate)
 p.eps_L_MPhi   = 0.001; % old value was 1102.9/1e5 & differentiation of monocyte to macrophage by IL-6 (half-effect)
 p.d_MPhi_I     = 0.3;        % death rate of infiltrating macrophages
-p.del_MPhi   = 0.3085;     % Rate inflammatory macrophages die due to TNF alpha and IFN gamma
-p.del_MPhi   = 0.3085/2;   %Pech override
+p.del_MPhi   = 0.3085/2;     % Rate inflammatory macrophages die due to TNF alpha and IFN gamma
 p.eps_Gamma_alpha = 1.994*10^(-5); % Rate inflammatory macrophages die due to TNF alpha and IFN gamma (half effect)
 p.eps_alpha_MPhi = 0.001093;
 
@@ -92,7 +88,6 @@ p.eps_L_T    = 1.5*1e-5;      % production of T cells by IL-6 (half-effect)
 p.p_T_Gamma = 6.56 ; %production of T cells by IFN Gamma (production rate)
 p.eps_Gamma_T    = 0.004;      % production of T cells by IFN-Gamma (half-effect)
 p.p_T_F      = 4;           %production of T cells by IFN (production rate)
-%p.eps_F_T    = 1e-3*1.5;       % production of T cells by IFN (half-effect)
 p.eps_F_T    = 0.004;       % production of T cells by IFN (half-effect)
 p.d_T        = 0.4;         % decay rate of T cells
 p.p_T_I      = 0.008*2;           % recruitment of T cells by infected cells  (rate)
@@ -167,25 +162,6 @@ p.R_F_T = 1000;
 p.R_F_I = 1300;
 p.MM_F = 19000;
 
-
-
-p.del_V_N = 768*3;
-p.del_V_MPhi = 768*100;
-%p.p_G_M = 1.234*1e3*1e-1;
-p.d_I = 0.144*0.1;
-p.p_MPhi_I_L =  0.78; % old number from simulation was zero point four two times four
-p.p_MPhi_I_G =  0.42*4;
-
-%---------------------------------------------------
-p.V0 = 4.5; 
-%p.phat = 394;
-p.phat = 394 * 1.5 ; %pech overrided
-p.beta = 0.3;
-p.d_I = 0.1;
-p.del_V_MPhi = 76800/200;
-%p.del_V_N = 2304/2.5;   %pech commented this out
-p.del_V_MPhi = 768 * 1.5;%pech overrided
-p.del_V_N = 2304/2.2;   %pech overrided
 %---------------------------------------------------
 
 %NK cells-------------------------------------------
@@ -254,3 +230,4 @@ p.A_Gamma = p.stoch*p.MM_Gamma/p.avo*(p.R_Gamma_T+p.R_Gamma_I+p.R_Gamma_MPhi)*(1
 p.A_alpha = p.stoch*p.MM_alpha/p.avo*(p.R_alpha_I+p.R_alpha_T+p.R_alpha_M+p.R_alpha_MPhi+p.R_alpha_K)*(1/5000)*10^9*1e12;% TNF Alpha
 
 end
+
